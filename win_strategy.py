@@ -116,7 +116,7 @@ def f_ege(edge, turn):
 
     start = edge // 5
     for i in range(start, 0, -1):
-        if a[i + 1] > 0 and a[i + 4] and a[5 * i] > 0:
+        if a[i + 1] > 0 and a[i + 4] > 0 and a[5 * i] > 0:
             a[i] = max(a[i + 1], a[5 * i], a[i + 4]) * (-1)
         else:
             neg = list(filter(lambda x: x < 0, [a[i + 1], a[5 * i], a[i + 4]]))
@@ -127,4 +127,67 @@ def f_ege(edge, turn):
             print(s)
 
 
-f_ege(67, 2)
+# f_ege(67, 2)
+
+
+def f_4109():
+    edge = 49
+    a = [0] * (edge + 1)
+    for i in range(50 // 2, 70 // 2):
+        a[i] = 1
+
+    a[edge] = 1
+    for i in range(edge - 1, 70 // 2 - 1, -1):
+        if a[i + 1] > 0:
+            a[i] = -a[i + 1]
+        else:
+            a[i] = -a[i + 1] + 1
+
+    for i in range(50 // 2 - 1, 0, -1):
+        if a[i + 1] > 0 and a[2 * i] > 0:
+            a[i] = (-1) * max(a[i + 1], a[2 * i])
+        else:
+            neg = list(filter(lambda x: x < 0, [a[i + 1], a[2 * i]]))
+            a[i] = abs(max(neg)) + 1
+    for i in range(len(a)):
+        if a[i] == -1:
+            print(i)
+
+
+# f_4109()
+# Две кучи
+
+def resh_ege_27416(turn):
+    n = 2 * (69 + 1)
+    a = [[0] * n for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if 2 * i + j >= 77 or 2 * j + i >= 77:
+                a[i][j] = 1
+
+    for _ in range(100):
+        for i in range(n):
+            for j in range(n):
+                if a[i][j] == 0:
+                    if a[i + 1][j] > 0 and a[i][j + 1] > 0 and a[2 * i][j] > 0 and a[i][2 * j] > 0:
+                        a[i][j] = -max(a[i + 1][j], a[i][j + 1], a[2 * i][j], a[i][2 * j])
+                    elif a[i + 1][j] < 0 or a[i][j + 1] < 0 or a[2 * i][j] < 0 or a[i][2 * j] < 0:
+                        neg = list(filter(lambda x: x < 0, [a[i + 1][j], a[i][j + 1], a[2 * i][j], a[i][2 * j]]))
+                        a[i][j] = abs(max(neg)) + 1
+
+    CRED = '\33[43m'
+    CEND = '\033[0m'
+    for i in range(n):
+        for j in range(n):
+            if a[i][j] == -1:
+                print(CRED + str(a[i][j]) + CEND, end='\t')
+            else:
+                print(a[i][j], end='\t')
+        print()
+
+    # for i in range(n):
+    #     if a[7][i] == turn:
+    #         print(i)
+
+
+resh_ege_27416(-2)
